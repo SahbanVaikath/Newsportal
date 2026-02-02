@@ -1,303 +1,764 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Al KULLIYA News</title>
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: var(--bg-color, #f4f6f8);
-        color: var(--text-color, #000);
-        transition: 0.3s;
-    }
-    header {
-        background: linear-gradient(90deg, #004aad, #0084ff);
-        color: white;
-        padding: 15px;
-        text-align: center;
-        font-size: 1.5em;
-        font-weight: bold;
-    }
-    #controls {
-        max-width: 900px;
-        margin: auto;
-        padding: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: space-between;
-    }
-    input, select, button, textarea {
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        font-size: 0.9em;
-    }
-    button {
-        background: #004aad;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-    button:hover { background: #00337a; }
-    #news-container {
-        max-width: 900px;
-        margin: auto;
-        padding: 15px;
-    }
-    .news-item {
-        background: var(--card-bg, white);
-        padding: 15px;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-    .news-header {
-        font-weight: bold;
-        font-size: 1.2em;
-    }
-    .news-time {
-        font-size: 0.8em;
-        color: gray;
-        margin-bottom: 5px;
-    }
-    .news-img {
-        max-width: 100%;
-        margin: 10px 0;
-        border-radius: 6px;
-    }
-    .delete-btn {
-        background: red;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        float: right;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    #admin-panel {
-        display: none;
-        max-width: 900px;
-        margin: 20px auto;
-        background: var(--card-bg, white);
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    #login-box {
-        max-width: 400px;
-        margin: 50px auto;
-        background: var(--card-bg, white);
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .read-more {
-        color: #004aad;
-        cursor: pointer;
-        font-size: 0.9em;
-    }
-    .dark-mode {
-        --bg-color: #121212;
-        --text-color: #fff;
-        --card-bg: #1e1e1e;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Chronicle | Modern College News</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --text-color: #333;
+            --gray-color: #95a5a6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: var(--text-color);
+            background-color: #f9f9f9;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--secondary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            font-weight: 600;
+            padding: 0.5rem 0;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        nav a.active {
+            color: var(--secondary-color);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        /* News Articles */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .news-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .news-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        .news-excerpt {
+            color: var(--gray-color);
+            margin-bottom: 1rem;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-title {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-color);
+        }
+
+        .upcoming-events li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--light-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-date {
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .quick-links li {
+            padding: 0.5rem 0;
+        }
+
+        .quick-links a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s;
+        }
+
+        .quick-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .quick-links i {
+            color: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-section p {
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--gray-color);
+        }
+
+        .loading i {
+            margin-right: 10px;
+            color: var(--secondary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: var(--shadow);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav li {
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-newspaper"></i>
+                <h1>Campus <span>Chronicle</span></h1>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="mainNav">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Campus News</a></li>
+                    <li><a href="#">Academics</a></li>
+                    <li><a href="#">Events</a></li>
+                    <li><a href="#">Sports</a></li>
+                    <li><a href="#">Opinion</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-<header>Al KULLIYA News</header>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Stay Updated with Campus Life</h2>
+            <p>The latest news, events, and announcements from your college community. Stay informed about everything happening on campus.</p>
+            <div class="hero-btns">
+                <a href="#news" class="btn">Read Latest News</a>
+                <a href="#" class="btn btn-secondary">Submit Story</a>
+            </div>
+        </div>
+    </section>
 
-<!-- Controls -->
-<div id="controls">
-    <input type="text" id="search" placeholder="Search news..." oninput="renderNews()">
-    <select id="filter-category" onchange="renderNews()">
-        <option value="">All Categories</option>
-        <option value="College">College</option>
-        <option value="Events">Events</option>
-        <option value="Sports">Sports</option>
-        <option value="Announcements">Announcements</option>
-    </select>
-    <select id="sort-order" onchange="renderNews()">
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-    </select>
-    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
-</div>
-
-<!-- News List -->
-<div id="news-container"></div>
-
-<!-- Admin Panel -->
-<div id="admin-panel">
-    <h3>Post News</h3>
-    <input type="text" id="news-title" placeholder="News Title">
-    <textarea id="news-content" placeholder="News Content"></textarea>
-    <select id="news-category">
-        <option value="College">College</option>
-        <option value="Events">Events</option>
-        <option value="Sports">Sports</option>
-        <option value="Announcements">Announcements</option>
-    </select>
-    <input type="file" id="news-image" accept="image/*">
-    <button onclick="postNews()">Post News</button>
-
-    <h3>Change Password</h3>
-    <input type="password" id="old-pass" placeholder="Old Password">
-    <input type="password" id="new-pass" placeholder="New Password">
-    <button onclick="changePassword()">Change Password</button>
-    <button style="background: gray;" onclick="logout()">Logout</button>
-</div>
-
-<!-- Login -->
-<div id="login-box">
-    <h3>Admin Login</h3>
-    <input type="password" id="admin-pass" placeholder="Enter Password">
-    <button onclick="login()">Login</button>
-</div>
-
-<script>
-    let newsList = JSON.parse(localStorage.getItem("newsList") || "[]");
-    let adminPassword = localStorage.getItem("adminPassword") || "admin123";
-
-    function formatDate(date) {
-        const d = new Date(date);
-        const now = new Date();
-        if (d.toDateString() === now.toDateString()) {
-            return `Today, ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-        }
-        return d.toLocaleDateString() + ", " + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
-
-    function renderNews() {
-        let container = document.getElementById("news-container");
-        container.innerHTML = "";
-        let searchTerm = document.getElementById("search").value.toLowerCase();
-        let filterCat = document.getElementById("filter-category").value;
-        let sortOrder = document.getElementById("sort-order").value;
-
-        let filtered = newsList.filter(n =>
-            (n.title.toLowerCase().includes(searchTerm) || n.content.toLowerCase().includes(searchTerm)) &&
-            (filterCat === "" || n.category === filterCat)
-        );
-
-        if (sortOrder === "oldest") filtered.reverse();
-
-        filtered.forEach((item, index) => {
-            let contentPreview = item.content.length > 150 ? item.content.substring(0, 150) + "..." : item.content;
-            let newsHTML = `
-                <div class="news-item">
-                    <div class="news-header">
-                        ${item.title} <span style="font-size:0.8em;color:gray;">[${item.category}]</span>
-                        ${localStorage.getItem("loggedIn") === "true" ? `<button class="delete-btn" onclick="deleteNews(${index})">Delete</button>` : ""}
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Main News Section -->
+            <main>
+                <div class="section-title">
+                    <h2>Latest News</h2>
+                    <div class="filter-options">
+                        <select id="categoryFilter" class="btn">
+                            <option value="all">All Categories</option>
+                            <option value="campus">Campus News</option>
+                            <option value="academics">Academics</option>
+                            <option value="events">Events</option>
+                            <option value="sports">Sports</option>
+                            <option value="research">Research</option>
+                        </select>
                     </div>
-                    <div class="news-time">${formatDate(item.time)}</div>
-                    ${item.image ? `<img src="${item.image}" class="news-img">` : ""}
-                    <div id="content-${index}">${contentPreview}</div>
-                    ${item.content.length > 150 ? `<span class="read-more" onclick="toggleReadMore(${index})">Read More</span>` : ""}
                 </div>
-            `;
-            container.innerHTML += newsHTML;
-        });
-    }
+                
+                <div id="newsContainer" class="news-grid">
+                    <!-- News articles will be loaded here -->
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading news articles...
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Upcoming Events</h3>
+                    <ul class="upcoming-events" id="eventsList">
+                        <!-- Events will be loaded here -->
+                    </ul>
+                </div>
+                
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Quick Links</h3>
+                    <ul class="quick-links">
+                        <li><a href="#"><i class="fas fa-calendar-alt"></i> Academic Calendar</a></li>
+                        <li><a href="#"><i class="fas fa-graduation-cap"></i> Student Portal</a></li>
+                        <li><a href="#"><i class="fas fa-book"></i> Library Resources</a></li>
+                        <li><a href="#"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                        <li><a href="#"><i class="fas fa-futbol"></i> Sports Schedule</a></li>
+                        <li><a href="#"><i class="fas fa-clipboard-list"></i> Campus Jobs</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Subscribe</h3>
+                    <p>Get the latest news delivered to your inbox.</p>
+                    <div style="margin-top: 1rem;">
+                        <input type="email" placeholder="Your email address" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: var(--border-radius); margin-bottom: 0.8rem;">
+                        <button class="btn" style="width: 100%;">Subscribe</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
 
-    function toggleReadMore(index) {
-        let contentDiv = document.getElementById(`content-${index}`);
-        let btn = contentDiv.nextElementSibling;
-        if (btn.innerText === "Read More") {
-            contentDiv.innerText = newsList[index].content;
-            btn.innerText = "Show Less";
-        } else {
-            contentDiv.innerText = newsList[index].content.substring(0, 150) + "...";
-            btn.innerText = "Read More";
-        }
-    }
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Campus Chronicle</h3>
+                    <p>The official student-run news source of the university. Bringing you the latest news, events, and stories from campus since 2005.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Student Union Building, Room 205</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> news@campuschronicle.edu</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="#">About Us</a></p>
+                    <p><a href="#">Submit a Story</a></p>
+                    <p><a href="#">Advertise with Us</a></p>
+                    <p><a href="#">Archives</a></p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Campus Chronicle. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-    function postNews() {
-        let title = document.getElementById("news-title").value;
-        let content = document.getElementById("news-content").value;
-        let category = document.getElementById("news-category").value;
-        let file = document.getElementById("news-image").files[0];
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
         
-        if (!title || !content) {
-            alert("Please fill in title and content");
-            return;
-        }
-
-        if (file) {
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                saveNews(title, content, category, e.target.result);
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Category filter
+        const categoryFilter = document.getElementById('categoryFilter');
+        let allNewsArticles = [];
+        
+        // Function to fetch news data from JSON
+        async function fetchNewsData() {
+            try {
+                // In a real application, this would be a path to your JSON file
+                // For this demo, we'll use the embedded JSON data
+                const response = await fetch('news-data.json');
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching news data:', error);
+                // Fallback to embedded data if fetch fails
+                return getEmbeddedNewsData();
             }
-            reader.readAsDataURL(file);
-        } else {
-            saveNews(title, content, category, "");
         }
-    }
-
-    function saveNews(title, content, category, image) {
-        let time = new Date().toISOString();
-        newsList.unshift({ title, content, category, image, time });
-        localStorage.setItem("newsList", JSON.stringify(newsList));
-        document.getElementById("news-title").value = "";
-        document.getElementById("news-content").value = "";
-        document.getElementById("news-image").value = "";
-        renderNews();
-    }
-
-    function deleteNews(index) {
-        if (confirm("Delete this news?")) {
-            newsList.splice(index, 1);
-            localStorage.setItem("newsList", JSON.stringify(newsList));
-            renderNews();
+        
+        // Function to load and display news articles
+        async function loadNewsArticles() {
+            const newsContainer = document.getElementById('newsContainer');
+            const eventsList = document.getElementById('eventsList');
+            
+            // Show loading state
+            newsContainer.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading news articles...</div>';
+            
+            // Fetch news data
+            const newsData = await fetchNewsData();
+            
+            // Store all articles for filtering
+            allNewsArticles = newsData.articles;
+            
+            // Display articles
+            displayArticles(allNewsArticles);
+            
+            // Display events
+            displayEvents(newsData.events);
+            
+            // Set up filter event listener
+            categoryFilter.addEventListener('change', filterArticles);
         }
-    }
-
-    function login() {
-        let pass = document.getElementById("admin-pass").value;
-        if (pass === adminPassword) {
-            localStorage.setItem("loggedIn", "true");
-            document.getElementById("admin-panel").style.display = "block";
-            document.getElementById("login-box").style.display = "none";
-            renderNews();
-        } else {
-            alert("Wrong password");
+        
+        // Function to display articles
+        function displayArticles(articles) {
+            const newsContainer = document.getElementById('newsContainer');
+            
+            if (articles.length === 0) {
+                newsContainer.innerHTML = '<div class="loading">No articles found for this category.</div>';
+                return;
+            }
+            
+            newsContainer.innerHTML = articles.map(article => `
+                <article class="news-card">
+                    <img src="${article.image}" alt="${article.title}">
+                    <div class="news-content">
+                        <span class="news-category">${article.category}</span>
+                        <h3 class="news-title">${article.title}</h3>
+                        <p class="news-excerpt">${article.excerpt}</p>
+                        <div class="news-meta">
+                            <span><i class="far fa-calendar"></i> ${article.date}</span>
+                            <span><i class="far fa-user"></i> ${article.author}</span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
         }
-    }
-
-    function logout() {
-        localStorage.removeItem("loggedIn");
-        document.getElementById("admin-panel").style.display = "none";
-        document.getElementById("login-box").style.display = "block";
-        renderNews();
-    }
-
-    function changePassword() {
-        let oldPass = document.getElementById("old-pass").value;
-        let newPass = document.getElementById("new-pass").value;
-        if (oldPass === adminPassword && newPass) {
-            adminPassword = newPass;
-            localStorage.setItem("adminPassword", newPass);
-            alert("Password changed successfully");
-        } else {
-            alert("Wrong old password or empty new password");
+        
+        // Function to display events
+        function displayEvents(events) {
+            const eventsList = document.getElementById('eventsList');
+            
+            eventsList.innerHTML = events.map(event => `
+                <li>
+                    <div class="event-date"><i class="far fa-calendar"></i> ${event.date}</div>
+                    <strong>${event.title}</strong>
+                    <div>${event.location}</div>
+                </li>
+            `).join('');
         }
-    }
-
-    function toggleDarkMode() {
-        document.body.classList.toggle("dark-mode");
-    }
-
-    // Init
-    if (localStorage.getItem("loggedIn") === "true") {
-        document.getElementById("admin-panel").style.display = "block";
-        document.getElementById("login-box").style.display = "none";
-    }
-    renderNews();
-</script>
-
+        
+        // Function to filter articles by category
+        function filterArticles() {
+            const selectedCategory = categoryFilter.value;
+            
+            if (selectedCategory === 'all') {
+                displayArticles(allNewsArticles);
+            } else {
+                const filteredArticles = allNewsArticles.filter(
+                    article => article.category.toLowerCase() === selectedCategory
+                );
+                displayArticles(filteredArticles);
+            }
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', loadNewsArticles);
+        
+        // Embedded JSON data as fallback
+        function getEmbeddedNewsData() {
+            return {
+                "articles": [
+                    {
+                        "id": 1,
+                        "title": "New Science Building Breaks Ground",
+                        "excerpt": "The university has begun construction on a state-of-the-art science facility that will house advanced research labs and classrooms.",
+                        "category": "Campus News",
+                        "date": "Oct 15, 2023",
+                        "author": "Alex Johnson",
+                        "image": "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    },
+                    {
+                        "id": 2,
+                        "title": "Basketball Team Wins Regional Championship",
+                        "excerpt": "The college basketball team secured a dramatic victory in the regional finals, advancing to the national tournament.",
+                        "category": "Sports",
+                        "date": "Oct 12, 2023",
+                        "author": "Marcus Chen",
+                        "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    },
+                    {
+                        "id": 3,
+                        "title": "Annual Cultural Festival Returns",
+                        "excerpt": "The popular multicultural festival is back this weekend featuring food, performances, and exhibits from around the world.",
+                        "category": "Events",
+                        "date": "Oct 10, 2023",
+                        "author": "Sofia Martinez",
+                        "image": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    },
+                    {
+                        "id": 4,
+                        "title": "Research Breakthrough in Renewable Energy",
+                        "excerpt": "University scientists have developed a new method to significantly improve solar panel efficiency using nanotechnology.",
+                        "category": "Research",
+                        "date": "Oct 8, 2023",
+                        "author": "Dr. James Wilson",
+                        "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    },
+                    {
+                        "id": 5,
+                        "title": "New Scholarship Program Announced",
+                        "excerpt": "The university has launched a new scholarship initiative aimed at supporting first-generation college students.",
+                        "category": "Academics",
+                        "date": "Oct 5, 2023",
+                        "author": "Admin Office",
+                        "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    },
+                    {
+                        "id": 6,
+                        "title": "Campus Sustainability Initiatives Expanded",
+                        "excerpt": "New recycling programs and solar installations are part of the college's commitment to becoming carbon neutral by 2030.",
+                        "category": "Campus News",
+                        "date": "Oct 3, 2023",
+                        "author": "Environmental Club",
+                        "image": "https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                    }
+                ],
+                "events": [
+                    {
+                        "id": 1,
+                        "title": "Homecoming Football Game",
+                        "date": "Oct 21, 2023",
+                        "location": "University Stadium"
+                    },
+                    {
+                        "id": 2,
+                        "title": "Career Fair 2023",
+                        "date": "Oct 25, 2023",
+                        "location": "Student Union Building"
+                    },
+                    {
+                        "id": 3,
+                        "title": "Guest Lecture: AI Ethics",
+                        "date": "Nov 2, 2023",
+                        "location": "Science Hall Auditorium"
+                    },
+                    {
+                        "id": 4,
+                        "title": "Fall Music Concert",
+                        "date": "Nov 10, 2023",
+                        "location": "Performing Arts Center"
+                    }
+                ]
+            };
+        }
+    </script>
 </body>
 </html>
