@@ -61,4 +61,48 @@
       "category": "Campus",
       "date": "Oct 3, 2023",
       "author": "Facilities Management",
-      "image": "https
+      "image": "https://images.unsplash.com/photo-1548014878-6c7b2878849c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": 8,
+      "title": "Calligraphy Workshop for Students",
+      "excerpt": "The Art Department is organizing a free Arabic calligraphy workshop for all interested students.",
+      "category": "Events",
+      "date": "Oct 1, 2023",
+      "author": "Art Department",
+      "image": "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Quran Recitation Competition",
+      "date": "Oct 25, 2023",
+      "location": "Main Auditorium"
+    },
+    {
+      "id": 2,
+      "title": "Islamic Finance Conference",
+      "date": "Oct 28, 2023",
+      "location": "Business School Hall"
+    },
+    {
+      "id": 3,
+      "title": "Arabic Poetry Night",
+      "date": "Nov 2, 2023",
+      "location": "Cultural Center"
+    },
+    {
+      "id": 4,
+      "title": "Inter-College Sports Finals",
+      "date": "Nov 5, 2023",
+      "location": "University Stadium"
+    },
+    {
+      "id": 5,
+      "title": "Career Fair 2023",
+      "date": "Nov 10, 2023",
+      "location": "Student Union Building"
+    }
+  ]
+}
