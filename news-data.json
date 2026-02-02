@@ -1,0 +1,108 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "New Science Building Breaks Ground",
+      "excerpt": "The university has begun construction on a state-of-the-art science facility that will house advanced research labs and classrooms.",
+      "category": "Campus News",
+      "date": "Oct 15, 2023",
+      "author": "Alex Johnson",
+      "image": "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": 2,
+      "title": "Basketball Team Wins Regional Championship",
+      "excerpt": "The college basketball team secured a dramatic victory in the regional finals, advancing to the national tournament.",
+      "category": "Sports",
+      "date": "Oct 12, 2023",
+      "author": "Marcus Chen",
+      "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": 3,
+      "title": "Annual Cultural Festival Returns",
+      "excerpt": "The popular multicultural festival is back this weekend featuring food, performances, and exhibits from around the world.",
+      "category": "Events",
+      "date": "Oct 10, 2023",
+      "author": "Sofia Martinez",
+      "image": "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": 4,
+      "title": "Research Breakthrough in Renewable Energy",
+      "excerpt": "University scientists have developed a new method to significantly improve solar panel efficiency using nanotechnology.",
+      "category": "Research",
+      "date": "Oct 8, 2023",
+      "author": "Dr. James Wilson",
+      "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": 5,
+      "title": "New Scholarship Program Announced",
+      "excerpt": "The university has launched a new scholarship initiative aimed at supporting first-generation college students.",
+      "category": "Academics",
+      "date": "Oct 5, 2023",
+      "author": "Admin Office",
+      "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": 6,
+      "title": "Campus Sustainability Initiatives Expanded",
+      "excerpt": "New recycling programs and solar installations are part of the college's commitment to becoming carbon neutral by 2030.",
+      "category": "Campus News",
+      "date": "Oct 3, 2023",
+      "author": "Environmental Club",
+      "image": "https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": 7,
+      "title": "Library Extends Hours During Finals",
+      "excerpt": "The main campus library will be open 24/7 during the final examination period to support student studying needs.",
+      "category": "Academics",
+      "date": "Oct 1, 2023",
+      "author": "Library Services",
+      "image": "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      "id": 8,
+      "title": "Student Government Election Results",
+      "excerpt": "The newly elected student government representatives were announced after a record turnout in campus elections.",
+      "category": "Campus News",
+      "date": "Sep 28, 2023",
+      "author": "Elections Committee",
+      "image": "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Homecoming Football Game",
+      "date": "Oct 21, 2023",
+      "location": "University Stadium"
+    },
+    {
+      "id": 2,
+      "title": "Career Fair 2023",
+      "date": "Oct 25, 2023",
+      "location": "Student Union Building"
+    },
+    {
+      "id": 3,
+      "title": "Guest Lecture: AI Ethics",
+      "date": "Nov 2, 2023",
+      "location": "Science Hall Auditorium"
+    },
+    {
+      "id": 4,
+      "title": "Fall Music Concert",
+      "date": "Nov 10, 2023",
+      "location": "Performing Arts Center"
+    },
+    {
+      "id": 5,
+      "title": "Alumni Networking Event",
+      "date": "Nov 15, 2023",
+      "location": "Business School Atrium"
+    }
+  ]
+}
