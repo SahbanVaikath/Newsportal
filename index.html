@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> AL KULLIYA | Modern College News</title>
+    <title>AL KULLIYA | Modern College News</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -305,6 +305,33 @@
             font-size: 0.9rem;
         }
 
+        /* No News Message */
+        .no-news {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 2px dashed var(--gray-color);
+        }
+
+        .no-news i {
+            font-size: 3rem;
+            color: var(--gray-color);
+            margin-bottom: 1rem;
+        }
+
+        .no-news h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .no-news p {
+            color: var(--gray-color);
+            margin-bottom: 1.5rem;
+        }
+
         /* Sidebar */
         .sidebar {
             display: flex;
@@ -459,6 +486,7 @@
             padding: 2rem;
             font-size: 1.2rem;
             color: var(--gray-color);
+            grid-column: 1 / -1;
         }
 
         .loading i {
@@ -706,19 +734,31 @@
         // Category filter
         const categoryFilter = document.getElementById('categoryFilter');
         let allNewsArticles = [];
+        let allEvents = [];
         
         // Function to fetch news data from JSON
         async function fetchNewsData() {
             try {
-                // In a real application, this would be a path to your JSON file
-                // For this demo, we'll use the embedded JSON data
                 const response = await fetch('alkulliya-news.json');
                 const data = await response.json();
+                
+                // Check if data is empty or has no articles
+                if (!data || !data.articles || data.articles.length === 0) {
+                    console.log('JSON file is empty or has no articles');
+                    return {
+                        articles: [], // Empty array
+                        events: data.events || [] // Keep events if they exist
+                    };
+                }
+                
                 return data;
             } catch (error) {
                 console.error('Error fetching news data:', error);
-                // Fallback to embedded data if fetch fails
-                return getEmbeddedNewsData();
+                // Return empty data structure
+                return {
+                    articles: [],
+                    events: []
+                };
             }
         }
         
@@ -734,13 +774,14 @@
             const newsData = await fetchNewsData();
             
             // Store all articles for filtering
-            allNewsArticles = newsData.articles;
+            allNewsArticles = newsData.articles || [];
+            allEvents = newsData.events || [];
             
-            // Display articles
+            // Display articles (will show "no news" message if empty)
             displayArticles(allNewsArticles);
             
-            // Display events
-            displayEvents(newsData.events);
+            // Display events or show message if empty
+            displayEvents(allEvents);
             
             // Set up filter event listener
             categoryFilter.addEventListener('change', filterArticles);
@@ -750,13 +791,32 @@
         function displayArticles(articles) {
             const newsContainer = document.getElementById('newsContainer');
             
-            if (articles.length === 0) {
-                newsContainer.innerHTML = '<div class="loading arabic">لا توجد مقالات لهذا التصنيف</div>';
+            // Clear the container
+            newsContainer.innerHTML = '';
+            
+            // Check if there are articles
+            if (!articles || articles.length === 0) {
+                // Show "no news" message
+                newsContainer.innerHTML = `
+                    <div class="no-news">
+                        <i class="fas fa-newspaper"></i>
+                        <h3 class="arabic">لا توجد أخبار حالياً</h3>
+                        <h3>No News Available</h3>
+                        <p class="arabic-text">لم يتم نشر أي أخبار بعد. سيتم تحديث الموقع قريباً بأحدث الأخبار.</p>
+                        <p>No news articles have been published yet. The website will be updated soon with the latest news.</p>
+                        <button class="btn" onclick="window.location.reload()">
+                            <i class="fas fa-redo"></i> Refresh Page
+                        </button>
+                    </div>
+                `;
                 return;
             }
             
-            newsContainer.innerHTML = articles.map(article => `
-                <article class="news-card">
+            // Display articles
+            articles.forEach(article => {
+                const articleElement = document.createElement('article');
+                articleElement.className = 'news-card';
+                articleElement.innerHTML = `
                     <img src="${article.image}" alt="${article.title}">
                     <div class="news-content">
                         <span class="news-category">${article.category}</span>
@@ -767,21 +827,39 @@
                             <span><i class="far fa-user"></i> ${article.author}</span>
                         </div>
                     </div>
-                </article>
-            `).join('');
+                `;
+                newsContainer.appendChild(articleElement);
+            });
         }
         
         // Function to display events
         function displayEvents(events) {
             const eventsList = document.getElementById('eventsList');
             
-            eventsList.innerHTML = events.map(event => `
-                <li>
+            // Clear the events list
+            eventsList.innerHTML = '';
+            
+            // Check if there are events
+            if (!events || events.length === 0) {
+                eventsList.innerHTML = `
+                    <li style="text-align: center; padding: 1rem; color: var(--gray-color);">
+                        <i class="far fa-calendar-times" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                        <div>No upcoming events</div>
+                    </li>
+                `;
+                return;
+            }
+            
+            // Display events
+            events.forEach(event => {
+                const eventElement = document.createElement('li');
+                eventElement.innerHTML = `
                     <div class="event-date"><i class="far fa-calendar"></i> ${event.date}</div>
                     <strong>${event.title}</strong>
                     <div>${event.location}</div>
-                </li>
-            `).join('');
+                `;
+                eventsList.appendChild(eventElement);
+            });
         }
         
         // Function to filter articles by category
@@ -792,7 +870,7 @@
                 displayArticles(allNewsArticles);
             } else {
                 const filteredArticles = allNewsArticles.filter(
-                    article => article.category.toLowerCase() === selectedCategory
+                    article => article.category.toLowerCase() === selectedCategory.toLowerCase()
                 );
                 displayArticles(filteredArticles);
             }
@@ -800,118 +878,6 @@
         
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', loadNewsArticles);
-        
-        // Embedded JSON data as fallback
-        function getEmbeddedNewsData() {
-            return {
-                "articles": [
-                    {
-                        "id": 1,
-                        "title": "New Islamic Studies Center Opens",
-                        "excerpt": "The university has inaugurated a new state-of-the-art Islamic Studies Center with advanced research facilities and a digital library.",
-                        "category": "Academics",
-                        "date": "Oct 18, 2023",
-                        "author": "Dr. Ahmed Hassan",
-                        "image": "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                    },
-                    {
-                        "id": 2,
-                        "title": "Arabic Language Competition Winners",
-                        "excerpt": "Students from our college have won top honors in the National Arabic Language Competition held in Riyadh.",
-                        "category": "Campus",
-                        "date": "Oct 15, 2023",
-                        "author": "Language Department",
-                        "image": "https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                    },
-                    {
-                        "id": 3,
-                        "title": "Annual Quran Recitation Competition",
-                        "excerpt": "The college announces the dates for the annual Quran recitation competition with participants from all departments.",
-                        "category": "Events",
-                        "date": "Oct 12, 2023",
-                        "author": "Islamic Affairs",
-                        "image": "https://images.unsplash.com/photo-1548014878-6c7b2878849c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                    },
-                    {
-                        "id": 4,
-                        "title": "Research on Islamic Finance Published",
-                        "excerpt": "Faculty members have published groundbreaking research on modern applications of Islamic finance principles.",
-                        "category": "Research",
-                        "date": "Oct 10, 2023",
-                        "author": "Research Office",
-                        "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                    },
-                    {
-                        "id": 5,
-                        "title": "Inter-College Football Tournament",
-                        "excerpt": "Our football team has reached the semi-finals of the inter-college tournament after a series of impressive victories.",
-                        "category": "Sports",
-                        "date": "Oct 8, 2023",
-                        "author": "Sports Committee",
-                        "image": "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                    },
-                    {
-                        "id": 6,
-                        "title": "New Scholarship Program for Outstanding Students",
-                        "excerpt": "The college has announced a new scholarship program for students with exceptional academic performance.",
-                        "category": "Academics",
-                        "date": "Oct 5, 2023",
-                        "author": "Admissions Office",
-                        "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                    },
-                    {
-                        "id": 7,
-                        "title": "Campus Mosque Renovation Completed",
-                        "excerpt": "The main campus mosque has been renovated with improved facilities and expanded capacity for prayers.",
-                        "category": "Campus",
-                        "date": "Oct 3, 2023",
-                        "author": "Facilities Management",
-                        "image": "https://images.unsplash.com/photo-1548014878-6c7b2878849c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                    },
-                    {
-                        "id": 8,
-                        "title": "Calligraphy Workshop for Students",
-                        "excerpt": "The Art Department is organizing a free Arabic calligraphy workshop for all interested students.",
-                        "category": "Events",
-                        "date": "Oct 1, 2023",
-                        "author": "Art Department",
-                        "image": "https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-                    }
-                ],
-                "events": [
-                    {
-                        "id": 1,
-                        "title": "Quran Recitation Competition",
-                        "date": "Oct 25, 2023",
-                        "location": "Main Auditorium"
-                    },
-                    {
-                        "id": 2,
-                        "title": "Islamic Finance Conference",
-                        "date": "Oct 28, 2023",
-                        "location": "Business School Hall"
-                    },
-                    {
-                        "id": 3,
-                        "title": "Arabic Poetry Night",
-                        "date": "Nov 2, 2023",
-                        "location": "Cultural Center"
-                    },
-                    {
-                        "id": 4,
-                        "title": "Inter-College Sports Finals",
-                        "date": "Nov 5, 2023",
-                        "location": "University Stadium"
-                    },
-                    {
-                        "id": 5,
-                        "title": "Career Fair 2025 ",
-                        "date": "Nov 10, 2025",
-                        "location": "Student Union Building"
-                    }
-                ]
-            };
-        }
     </script>
 </body>
 </html>
