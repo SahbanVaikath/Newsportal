@@ -1,0 +1,303 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al KULLIYA News</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: var(--bg-color, #f4f6f8);
+        color: var(--text-color, #000);
+        transition: 0.3s;
+    }
+    header {
+        background: linear-gradient(90deg, #004aad, #0084ff);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    #controls {
+        max-width: 900px;
+        margin: auto;
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: space-between;
+    }
+    input, select, button, textarea {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 0.9em;
+    }
+    button {
+        background: #004aad;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover { background: #00337a; }
+    #news-container {
+        max-width: 900px;
+        margin: auto;
+        padding: 15px;
+    }
+    .news-item {
+        background: var(--card-bg, white);
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    .news-header {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    .news-time {
+        font-size: 0.8em;
+        color: gray;
+        margin-bottom: 5px;
+    }
+    .news-img {
+        max-width: 100%;
+        margin: 10px 0;
+        border-radius: 6px;
+    }
+    .delete-btn {
+        background: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        float: right;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    #admin-panel {
+        display: none;
+        max-width: 900px;
+        margin: 20px auto;
+        background: var(--card-bg, white);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #login-box {
+        max-width: 400px;
+        margin: 50px auto;
+        background: var(--card-bg, white);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .read-more {
+        color: #004aad;
+        cursor: pointer;
+        font-size: 0.9em;
+    }
+    .dark-mode {
+        --bg-color: #121212;
+        --text-color: #fff;
+        --card-bg: #1e1e1e;
+    }
+</style>
+</head>
+<body>
+
+<header>Al KULLIYA News</header>
+
+<!-- Controls -->
+<div id="controls">
+    <input type="text" id="search" placeholder="Search news..." oninput="renderNews()">
+    <select id="filter-category" onchange="renderNews()">
+        <option value="">All Categories</option>
+        <option value="College">College</option>
+        <option value="Events">Events</option>
+        <option value="Sports">Sports</option>
+        <option value="Announcements">Announcements</option>
+    </select>
+    <select id="sort-order" onchange="renderNews()">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+    </select>
+    <button onclick="toggleDarkMode()">🌙 Dark Mode</button>
+</div>
+
+<!-- News List -->
+<div id="news-container"></div>
+
+<!-- Admin Panel -->
+<div id="admin-panel">
+    <h3>Post News</h3>
+    <input type="text" id="news-title" placeholder="News Title">
+    <textarea id="news-content" placeholder="News Content"></textarea>
+    <select id="news-category">
+        <option value="College">College</option>
+        <option value="Events">Events</option>
+        <option value="Sports">Sports</option>
+        <option value="Announcements">Announcements</option>
+    </select>
+    <input type="file" id="news-image" accept="image/*">
+    <button onclick="postNews()">Post News</button>
+
+    <h3>Change Password</h3>
+    <input type="password" id="old-pass" placeholder="Old Password">
+    <input type="password" id="new-pass" placeholder="New Password">
+    <button onclick="changePassword()">Change Password</button>
+    <button style="background: gray;" onclick="logout()">Logout</button>
+</div>
+
+<!-- Login -->
+<div id="login-box">
+    <h3>Admin Login</h3>
+    <input type="password" id="admin-pass" placeholder="Enter Password">
+    <button onclick="login()">Login</button>
+</div>
+
+<script>
+    let newsList = JSON.parse(localStorage.getItem("newsList") || "[]");
+    let adminPassword = localStorage.getItem("adminPassword") || "admin123";
+
+    function formatDate(date) {
+        const d = new Date(date);
+        const now = new Date();
+        if (d.toDateString() === now.toDateString()) {
+            return `Today, ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        }
+        return d.toLocaleDateString() + ", " + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderNews() {
+        let container = document.getElementById("news-container");
+        container.innerHTML = "";
+        let searchTerm = document.getElementById("search").value.toLowerCase();
+        let filterCat = document.getElementById("filter-category").value;
+        let sortOrder = document.getElementById("sort-order").value;
+
+        let filtered = newsList.filter(n =>
+            (n.title.toLowerCase().includes(searchTerm) || n.content.toLowerCase().includes(searchTerm)) &&
+            (filterCat === "" || n.category === filterCat)
+        );
+
+        if (sortOrder === "oldest") filtered.reverse();
+
+        filtered.forEach((item, index) => {
+            let contentPreview = item.content.length > 150 ? item.content.substring(0, 150) + "..." : item.content;
+            let newsHTML = `
+                <div class="news-item">
+                    <div class="news-header">
+                        ${item.title} <span style="font-size:0.8em;color:gray;">[${item.category}]</span>
+                        ${localStorage.getItem("loggedIn") === "true" ? `<button class="delete-btn" onclick="deleteNews(${index})">Delete</button>` : ""}
+                    </div>
+                    <div class="news-time">${formatDate(item.time)}</div>
+                    ${item.image ? `<img src="${item.image}" class="news-img">` : ""}
+                    <div id="content-${index}">${contentPreview}</div>
+                    ${item.content.length > 150 ? `<span class="read-more" onclick="toggleReadMore(${index})">Read More</span>` : ""}
+                </div>
+            `;
+            container.innerHTML += newsHTML;
+        });
+    }
+
+    function toggleReadMore(index) {
+        let contentDiv = document.getElementById(`content-${index}`);
+        let btn = contentDiv.nextElementSibling;
+        if (btn.innerText === "Read More") {
+            contentDiv.innerText = newsList[index].content;
+            btn.innerText = "Show Less";
+        } else {
+            contentDiv.innerText = newsList[index].content.substring(0, 150) + "...";
+            btn.innerText = "Read More";
+        }
+    }
+
+    function postNews() {
+        let title = document.getElementById("news-title").value;
+        let content = document.getElementById("news-content").value;
+        let category = document.getElementById("news-category").value;
+        let file = document.getElementById("news-image").files[0];
+        
+        if (!title || !content) {
+            alert("Please fill in title and content");
+            return;
+        }
+
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                saveNews(title, content, category, e.target.result);
+            }
+            reader.readAsDataURL(file);
+        } else {
+            saveNews(title, content, category, "");
+        }
+    }
+
+    function saveNews(title, content, category, image) {
+        let time = new Date().toISOString();
+        newsList.unshift({ title, content, category, image, time });
+        localStorage.setItem("newsList", JSON.stringify(newsList));
+        document.getElementById("news-title").value = "";
+        document.getElementById("news-content").value = "";
+        document.getElementById("news-image").value = "";
+        renderNews();
+    }
+
+    function deleteNews(index) {
+        if (confirm("Delete this news?")) {
+            newsList.splice(index, 1);
+            localStorage.setItem("newsList", JSON.stringify(newsList));
+            renderNews();
+        }
+    }
+
+    function login() {
+        let pass = document.getElementById("admin-pass").value;
+        if (pass === adminPassword) {
+            localStorage.setItem("loggedIn", "true");
+            document.getElementById("admin-panel").style.display = "block";
+            document.getElementById("login-box").style.display = "none";
+            renderNews();
+        } else {
+            alert("Wrong password");
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("loggedIn");
+        document.getElementById("admin-panel").style.display = "none";
+        document.getElementById("login-box").style.display = "block";
+        renderNews();
+    }
+
+    function changePassword() {
+        let oldPass = document.getElementById("old-pass").value;
+        let newPass = document.getElementById("new-pass").value;
+        if (oldPass === adminPassword && newPass) {
+            adminPassword = newPass;
+            localStorage.setItem("adminPassword", newPass);
+            alert("Password changed successfully");
+        } else {
+            alert("Wrong old password or empty new password");
+        }
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode");
+    }
+
+    // Init
+    if (localStorage.getItem("loggedIn") === "true") {
+        document.getElementById("admin-panel").style.display = "block";
+        document.getElementById("login-box").style.display = "none";
+    }
+    renderNews();
+</script>
+
+</body>
+</html>
